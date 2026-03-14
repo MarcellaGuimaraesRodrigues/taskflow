@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Perfil{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-box">
+        <div class="auth-logo">TaskFlow</div>
+        <h1>Editar perfil</h1>
+        <p class="auth-subtitle">Atualize seus dados de acesso.</p>
+
+        <form method="POST" class="auth-form">
+            <input type="text" name="nome" value="{{ current_user.nome }}" placeholder="Seu nome" required>
+            <input type="email" name="email" value="{{ current_user.email }}" placeholder="Seu e-mail" required>
+            <button type="submit">Salvar alterações</button>
+        </form>
+
+        <p class="auth-link">
+            <a href="/dashboard">Voltar ao dashboard</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

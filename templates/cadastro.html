@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastro{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-box">
+        <div class="auth-logo">TaskFlow</div>
+        <h1>Criar conta</h1>
+        <p class="auth-subtitle">Monte seu quadro e organize faculdade, estágio e rotina.</p>
+
+        <form method="POST" class="auth-form">
+            <input type="text" name="nome" placeholder="Seu nome" required>
+            <input type="email" name="email" placeholder="Seu e-mail" required>
+
+            <div class="password-group">
+                <input type="password" id="cadastro_senha" name="senha" placeholder="Crie uma senha" required>
+                <button type="button" class="toggle-btn" onclick="togglePassword('cadastro_senha', this)">Mostrar</button>
+            </div>
+
+            <div class="password-group">
+                <input type="password" id="cadastro_confirmar_senha" name="confirmar_senha" placeholder="Confirme sua senha" required>
+                <button type="button" class="toggle-btn" onclick="togglePassword('cadastro_confirmar_senha', this)">Mostrar</button>
+            </div>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+
+        <p class="password-hint">A senha deve ter no mínimo 8 caracteres, 1 letra maiúscula e 1 número.</p>
+
+        <p class="auth-link">
+            Já tem conta?
+            <a href="/">Voltar para login</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

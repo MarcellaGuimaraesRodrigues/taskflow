@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="sidebar-brand">TaskFlow</div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-title">Menu</div>
+            <a class="sidebar-link active" href="/dashboard">Dashboard</a>
+            <a class="sidebar-link" href="/board">Quadro</a>
+            <a class="sidebar-link" href="/perfil">Perfil</a>
+            <a class="sidebar-link" href="/redefinir_senha">Senha</a>
+            <a class="sidebar-link" href="/logout">Sair</a>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-title">Categorias</div>
+            {% if categorias %}
+                {% for categoria in categorias %}
+                    <div class="sidebar-pill">{{ categoria }}</div>
+                {% endfor %}
+            {% else %}
+                <div class="sidebar-empty">Nenhuma categoria ainda</div>
+            {% endif %}
+        </div>
+    </aside>
+
+    <main class="main-area">
+        <header class="topbar">
+            <div>
+                <h1>Olá, {{ nome }}</h1>
+                <p>Resumo do seu organizador</p>
+            </div>
+
+            <div class="topbar-actions">
+                <a class="top-btn primary" href="/board">Abrir quadro</a>
+                <a class="top-btn" href="/perfil">Meu perfil</a>
+            </div>
+        </header>
+
+        <section class="dashboard-grid">
+            <div class="stat-card purple">
+                <span>Total</span>
+                <strong>{{ total }}</strong>
+            </div>
+
+            <div class="stat-card gold">
+                <span>Hoje</span>
+                <strong>{{ hoje }}</strong>
+            </div>
+
+            <div class="stat-card green">
+                <span>Esta semana</span>
+                <strong>{{ semana }}</strong>
+            </div>
+
+            <div class="stat-card dark">
+                <span>Mais tarde</span>
+                <strong>{{ depois }}</strong>
+            </div>
+
+            <div class="stat-card blue wide">
+                <span>Concluído</span>
+                <strong>{{ concluido }}</strong>
+            </div>
+        </section>
+    </main>
+</div>
+{% endblock %}

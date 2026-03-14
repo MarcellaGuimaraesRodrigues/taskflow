@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Redefinir senha{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-box">
+        <div class="auth-logo">TaskFlow</div>
+        <h1>Redefinir senha</h1>
+        <p class="auth-subtitle">Crie uma nova senha segura para sua conta.</p>
+
+        <form method="POST" class="auth-form">
+            <div class="password-group">
+                <input type="password" id="senha_atual" name="senha_atual" placeholder="Senha atual" required>
+                <button type="button" class="toggle-btn" onclick="togglePassword('senha_atual', this)">Mostrar</button>
+            </div>
+
+            <div class="password-group">
+                <input type="password" id="nova_senha" name="nova_senha" placeholder="Nova senha" required>
+                <button type="button" class="toggle-btn" onclick="togglePassword('nova_senha', this)">Mostrar</button>
+            </div>
+
+            <div class="password-group">
+                <input type="password" id="confirmar_nova_senha" name="confirmar_nova_senha" placeholder="Confirmar nova senha" required>
+                <button type="button" class="toggle-btn" onclick="togglePassword('confirmar_nova_senha', this)">Mostrar</button>
+            </div>
+
+            <button type="submit">Atualizar senha</button>
+        </form>
+
+        <p class="password-hint">A senha deve ter no mínimo 8 caracteres, 1 letra maiúscula e 1 número.</p>
+
+        <p class="auth-link">
+            <a href="/perfil">Voltar ao perfil</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

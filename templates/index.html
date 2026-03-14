@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-box">
+        <div class="auth-logo">TaskFlow</div>
+        <h1>Entrar</h1>
+        <p class="auth-subtitle">Organize sua rotina de um jeito visual.</p>
+
+        <form method="POST" action="/login" class="auth-form">
+            <input type="email" name="email" placeholder="Seu e-mail" required>
+
+            <div class="password-group">
+                <input type="password" id="login_senha" name="senha" placeholder="Sua senha" required>
+                <button type="button" class="toggle-btn" onclick="togglePassword('login_senha', this)">Mostrar</button>
+            </div>
+
+            <button type="submit">Entrar</button>
+        </form>
+
+        <p class="password-hint">Senha com pelo menos 8 caracteres, 1 maiúscula e 1 número.</p>
+
+        <p class="auth-link">
+            Não tem conta?
+            <a href="/cadastro">Criar conta</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

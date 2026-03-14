@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% block title %}Quadro{% endblock %}
+
+{% block content %}
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="sidebar-brand">TaskFlow</div>
+
+        <div class="sidebar-card">
+            <div class="sidebar-card-title">Caixa de entrada</div>
+            <button class="sidebar-add-btn" type="button" onclick="toggleForm()">
+                Adicionar um cartão
+            </button>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-title">Navegação</div>
+            <a class="sidebar-link" href="/dashboard">Dashboard</a>
+            <a class="sidebar-link active" href="/board">Quadro</a>
+            <a class="sidebar-link" href="/perfil">Perfil</a>
+            <a class="sidebar-link" href="/redefinir_senha">Senha</a>
+            <a class="sidebar-link" href="/logout">Sair</a>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-title">Categorias</div>
+
+            <a class="sidebar-link {% if not categoria_ativa %}active-soft{% endif %}" href="/board">
+                Todas
+            </a>
+
+            {% for categoria in categorias %}
+                <a class="sidebar-link {% if categoria_ativa == categoria %}active-soft{% endif %}" href="/board?categoria={{ categoria }}">
+                    {{ categoria }}
+                </a>
+            {% endfor %}
+        </div>
+    </aside>
+
+    <main class="board-page">
+        <header class="board-topbar">
+            <div class="board-top-left">
+                <div class="board-title">Meu quadro</div>
+                <div class="board-subtitle">Organizador visual de rotina</div>
+            </div>
+
+            <div class="board-top-right">
+                <div class="user-badge">{{ nome[0] }}</div>
+                <button class="create-btn" type="button" onclick="toggleForm()">Criar</button>
+            </div>
+        </header>
+
+        <section id="taskFormBox" class="task-form-panel hidden">
+            <form method="POST" action="/add" class="task-form-grid">
+                <input type="text" name="titulo" placeholder="Título da tarefa" required>
+                <input type="text" name="categoria" placeholder="Categoria (Faculdade, Estágio...)" required>
+                <textarea name="descricao" placeholder="Descrição da tarefa"></textarea>
+
+                <select name="prioridade" required>
+                    <option value="Baixa">Baixa</option>
+                    <option value="Média" selected>Média</option>
+                    <option value="Alta">Alta</option>
+                </select>
+
+                <select name="status" required>
+                    <option value="hoje">Hoje</option>
+                    <option value="semana">Esta semana</option>
+                    <option value="depois">Mais tarde</option>
+                    <option value="concluido">Concluído</option>
+                </select>
+
+                <button type="submit">Adicionar cartão</button>
+            </form>
+        </section>
+
+        <section class="kanban-board">
+            <div class="kanban-column purple-col">
+                <div class="column-header">
+                    <h2>Hoje</h2>
+                </div>
+
+                {% for t in col_hoje %}
+                    <div class="task-card-modern">
+                        <div class="task-title">{{ t.titulo }}</div>
+                        <div class="task-category">{{ t.categoria }}</div>
+
+                        {% if t.descricao %}
+                            <div class="task-desc">{{ t.descricao }}</div>
+                        {% endif %}
+
+                        <div class="task-meta">
+                            <span class="chip {{ 'high' if t.prioridade == 'Alta' else 'medium' if t.prioridade == 'Média' else 'low' }}">
+                                {{ t.prioridade }}
+                            </span>
+                        </div>
+
+                        <div class="task-actions">
+                            <a href="/move/{{ t.id }}/semana">Semana</a>
+                            <a href="/move/{{ t.id }}/concluido">Concluir</a>
+                            <a class="delete-link" href="/delete/{{ t.id }}">Excluir</a>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <button class="add-card-inline" type="button" onclick="toggleForm()">+ Adicionar um cartão</button>
+            </div>
+
+            <div class="kanban-column gold-col">
+                <div class="column-header">
+                    <h2>Esta semana</h2>
+                </div>
+
+                {% for t in col_semana %}
+                    <div class="task-card-modern">
+                        <div class="task-title">{{ t.titulo }}</div>
+                        <div class="task-category">{{ t.categoria }}</div>
+
+                        {% if t.descricao %}
+                            <div class="task-desc">{{ t.descricao }}</div>
+                        {% endif %}
+
+                        <div class="task-meta">
+                            <span class="chip {{ 'high' if t.prioridade == 'Alta' else 'medium' if t.prioridade == 'Média' else 'low' }}">
+                                {{ t.prioridade }}
+                            </span>
+                        </div>
+
+                        <div class="task-actions">
+                            <a href="/move/{{ t.id }}/hoje">Hoje</a>
+                            <a href="/move/{{ t.id }}/depois">Mais tarde</a>
+                            <a href="/move/{{ t.id }}/concluido">Concluir</a>
+                            <a class="delete-link" href="/delete/{{ t.id }}">Excluir</a>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <button class="add-card-inline" type="button" onclick="toggleForm()">+ Adicionar um cartão</button>
+            </div>
+
+            <div class="kanban-column green-col">
+                <div class="column-header">
+                    <h2>Mais tarde</h2>
+                </div>
+
+                {% for t in col_depois %}
+                    <div class="task-card-modern">
+                        <div class="task-title">{{ t.titulo }}</div>
+                        <div class="task-category">{{ t.categoria }}</div>
+
+                        {% if t.descricao %}
+                            <div class="task-desc">{{ t.descricao }}</div>
+                        {% endif %}
+
+                        <div class="task-meta">
+                            <span class="chip {{ 'high' if t.prioridade == 'Alta' else 'medium' if t.prioridade == 'Média' else 'low' }}">
+                                {{ t.prioridade }}
+                            </span>
+                        </div>
+
+                        <div class="task-actions">
+                            <a href="/move/{{ t.id }}/hoje">Hoje</a>
+                            <a href="/move/{{ t.id }}/semana">Semana</a>
+                            <a href="/move/{{ t.id }}/concluido">Concluir</a>
+                            <a class="delete-link" href="/delete/{{ t.id }}">Excluir</a>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <button class="add-card-inline" type="button" onclick="toggleForm()">+ Adicionar um cartão</button>
+            </div>
+
+            <div class="kanban-column dark-col">
+                <div class="column-header">
+                    <h2>Concluído</h2>
+                </div>
+
+                {% for t in col_concluido %}
+                    <div class="task-card-modern done-card">
+                        <div class="task-title">{{ t.titulo }}</div>
+                        <div class="task-category">{{ t.categoria }}</div>
+
+                        {% if t.descricao %}
+                            <div class="task-desc">{{ t.descricao }}</div>
+                        {% endif %}
+
+                        <div class="task-meta">
+                            <span class="chip done">Finalizado</span>
+                        </div>
+
+                        <div class="task-actions">
+                            <a href="/move/{{ t.id }}/hoje">Reabrir</a>
+                            <a class="delete-link" href="/delete/{{ t.id }}">Excluir</a>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <button class="add-card-inline" type="button" onclick="toggleForm()">+ Adicionar um cartão</button>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+    function toggleForm() {
+        const box = document.getElementById("taskFormBox");
+        box.classList.toggle("hidden");
+    }
+</script>
+{% endblock %}
