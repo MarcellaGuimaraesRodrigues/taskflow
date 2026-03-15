@@ -1,2 +1,5 @@
-*instance/banco.db
 *.db
+instance/
+.env
+.venv/
+__pycache__/
